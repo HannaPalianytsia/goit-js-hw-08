@@ -66,3 +66,25 @@ const images = [
 
 const gallery = document.querySelector(".gallery");
 
+const imagesMarkup = [];
+images.map(({ preview, original, description }) => {
+  imagesMarkup.push(`<li class="gallery-item">
+  <a class="gallery-link" href="${original}">
+    <img
+      class="gallery-image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+    />
+  </a>
+</li>`);
+});
+
+gallery.insertAdjacentHTML("afterbegin", imagesMarkup.join(""));
+
+document.querySelector("ul.gallery").addEventListener("click", onImgClick)
+     
+function onImgClick(event) {
+  event.preventDefault(); 
+  console.log(event.target.getAttribute("data-source"));
+}
