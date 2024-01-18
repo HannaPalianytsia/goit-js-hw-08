@@ -64,11 +64,9 @@ const images = [
   },
 ];
 
-const gallery = document.querySelector(".gallery");
+const gallery = document.querySelector("ul.gallery");
 
-const imagesMarkup = [];
-images.map(({ preview, original, description }) => {
-  imagesMarkup.push(`<li class="gallery-item">
+const imagesMarkup = images.map(({ preview, original, description }) => `<li class="gallery-item">
   <a class="gallery-link" href="${original}">
     <img
       class="gallery-image"
@@ -78,13 +76,25 @@ images.map(({ preview, original, description }) => {
     />
   </a>
 </li>`);
-});
 
-gallery.insertAdjacentHTML("afterbegin", imagesMarkup.join(""));
+gallery.insertAdjacentHTML("afterbegin", imagesMarkup.join("\n"));
 
-document.querySelector("ul.gallery").addEventListener("click", onImgClick)
+gallery.addEventListener("click", onImgClick);
      
 function onImgClick(event) {
   event.preventDefault(); 
+  if (event.target === event.currentTarget) return;
   console.log(event.target.getAttribute("data-source"));
 }
+
+
+const instance = basicLightbox.create(`
+    <div class="modal">
+        <p>
+            Your first lightbox with just a few lines of code.
+            Yes, it's really that simple.
+        </p>
+    </div>
+`)
+
+instance.show()
