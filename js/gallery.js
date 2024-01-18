@@ -79,22 +79,28 @@ const imagesMarkup = images.map(({ preview, original, description }) => `<li cla
 
 gallery.insertAdjacentHTML("afterbegin", imagesMarkup.join("\n"));
 
+
 gallery.addEventListener("click", onImgClick);
-     
+
+
 function onImgClick(event) {
   event.preventDefault(); 
+
   if (event.target === event.currentTarget) return;
-  console.log(event.target.getAttribute("data-source"));
+
+  const instance = basicLightbox.create(`
+    <img src="${event.target.getAttribute("data-source")}" width="800" height="600">
+  `, {
+    onClose: () => {
+      document.removeEventListener("keydown", onEscKeydown);
+    }
+  });
+
+  instance.show(() => document.addEventListener("keydown", onEscKeydown));
+  
+  function onEscKeydown(event) {
+    if (event.code === "Escape") instance.close();
+  }
 }
 
 
-const instance = basicLightbox.create(`
-    <div class="modal">
-        <p>
-            Your first lightbox with just a few lines of code.
-            Yes, it's really that simple.
-        </p>
-    </div>
-`)
-
-instance.show()
